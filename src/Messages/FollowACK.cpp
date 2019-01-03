@@ -11,9 +11,10 @@ class FollowACK : public ACK {
         short numOfUsers;
         std::vector<std::string> userNameList;
         char followOrUnfollow;
+        int currentNumOfUsers;
 
     public:
-        FollowACK() : ACK(), numOfUsers(0), userNameList(), followOrUnfollow('B') {
+        FollowACK() : ACK(), numOfUsers(-1), userNameList(), followOrUnfollow('B'), currentNumOfUsers(0) {
             typeOfMessage = 4;
         }
 
@@ -29,8 +30,8 @@ class FollowACK : public ACK {
             return userNameList;
         }
 
-        void setUserNameList(const std::vector<std::string> &userNameList) {
-            FollowACK::userNameList = userNameList;
+        void addUserNameList(const std::string &userName) {
+            FollowACK::userNameList.push_back(userName);
         }
 
         std::string messageString() {return "ACK 4 " + getStringFromChar() + " " + getUsersString(); }
@@ -41,6 +42,14 @@ class FollowACK : public ACK {
 
         void setFollowOrUnfollow(char followOrUnfollow) {
             FollowACK::followOrUnfollow = followOrUnfollow;
+        }
+
+        int getCurrentNumOfUsers() const {
+            return currentNumOfUsers;
+        }
+
+        void increaseCurrentNumOfUsers() {
+            FollowACK::currentNumOfUsers++;
         }
 
     private:

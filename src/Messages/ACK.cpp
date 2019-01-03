@@ -11,7 +11,7 @@ class ACK : public ACKOrError {
 
         std::string messageString() { return "ACK " + typeOfMessage; }
 
-    protected:
+    public:
         virtual void setTypeOfMessage(short typeOfMessage) {
             ACKOrError::typeOfMessage = typeOfMessage;
         }

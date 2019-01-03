@@ -11,7 +11,7 @@ private:
     short numOfFollowers;
     short numOfFollowing;
 public:
-    StatACK() : ACK(), numOfFollowers(0), numOfPosts(0), numOfFollowing(0) {
+    StatACK() : ACK(), numOfFollowers(-1), numOfPosts(-1), numOfFollowing(-1) {
         typeOfMessage = 8;
     }
 

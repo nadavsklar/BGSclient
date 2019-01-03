@@ -10,7 +10,7 @@ class ACKOrError : public Message {
         short typeOfMessage;
 
     public:
-        ACKOrError(short opcode) : Message(opcode), typeOfMessage() {}
+        ACKOrError(short opcode) : Message(opcode), typeOfMessage(-1) {}
 
         short getTypeOfMessage()  {
             return typeOfMessage;

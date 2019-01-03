@@ -10,4 +10,8 @@ class Error : public ACKOrError {
         Error() : ACKOrError(11) { };
 
         std::string messageString() { return "Error " + typeOfMessage; }
+
+        void setTypeOfMessage(short typeOfMessage) {
+            ACKOrError::typeOfMessage = typeOfMessage;
+        }
 };

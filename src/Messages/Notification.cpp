@@ -12,7 +12,8 @@ private:
     std::string content;
 
 public:
-    Notification() : Message(9), publicOrPrivate('B'), postingUser(nullptr), content(nullptr) {}
+    Notification() : Message(9), publicOrPrivate('B'), postingUser(""), content("") {}
+
 
     char getPublicOrPrivate() const {
         return publicOrPrivate;
