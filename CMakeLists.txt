@@ -17,7 +17,7 @@ if(Boost_FOUND)
             include/connectionHandler.h
             src/connectionHandler.cpp
             src/echoClient.cpp
-            makefile)
+            makefile include/messageEncoderDecoder.h src/messageEncoderDecoder.cpp)
     target_link_libraries(BGSclient ${Boost_LIBRARIES})
 endif()
 set(CMAKE_CXX_STANDARD 11)
