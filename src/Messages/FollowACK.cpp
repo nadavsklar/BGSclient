@@ -2,68 +2,57 @@
 // Created by nadavsklar on 1/3/19.
 //
 
-#include <src/Messages/ACK.cpp>
+#include <include/Message.h>
 #include <vector>
+using namespace std;
 
-class FollowACK : public ACK {
+FollowACK::FollowACK() : ACK(), numOfUsers(-1), userNameList(), followOrUnfollow('B'), currentNumOfUsers(0) {
+    typeOfMessage = 4;
+}
 
-    private:
-        short numOfUsers;
-        std::vector<std::string> userNameList;
-        char followOrUnfollow;
-        int currentNumOfUsers;
+short FollowACK::getNumOfUsers() const {
+    return numOfUsers;
+}
 
-    public:
-        FollowACK() : ACK(), numOfUsers(-1), userNameList(), followOrUnfollow('B'), currentNumOfUsers(0) {
-            typeOfMessage = 4;
-        }
+void FollowACK::setNumOfUsers(short numOfUsers) {
+    FollowACK::numOfUsers = numOfUsers;
+}
 
-        short getNumOfUsers() const {
-            return numOfUsers;
-        }
+const std::vector<std::string> &FollowACK::getUserNameList() const {
+    return userNameList;
+}
 
-        void setNumOfUsers(short numOfUsers) {
-            FollowACK::numOfUsers = numOfUsers;
-        }
+void FollowACK::addUserNameList(const std::string &userName) {
+    FollowACK::userNameList.push_back(userName);
+}
 
-        const std::vector<std::string> &getUserNameList() const {
-            return userNameList;
-        }
+std::string FollowACK::messageString() { return "ACK 4 " + getStringFromChar() + " " + getUsersString(); }
 
-        void addUserNameList(const std::string &userName) {
-            FollowACK::userNameList.push_back(userName);
-        }
+char FollowACK::getFollowOrUnfollow() const {
+    return followOrUnfollow;
+}
 
-        std::string messageString() {return "ACK 4 " + getStringFromChar() + " " + getUsersString(); }
+void FollowACK::setFollowOrUnfollow(char followOrUnfollow) {
+    FollowACK::followOrUnfollow = followOrUnfollow;
+}
 
-        char getFollowOrUnfollow() const {
-            return followOrUnfollow;
-        }
+int FollowACK::getCurrentNumOfUsers() const {
+    return currentNumOfUsers;
+}
 
-        void setFollowOrUnfollow(char followOrUnfollow) {
-            FollowACK::followOrUnfollow = followOrUnfollow;
-        }
+void FollowACK::increaseCurrentNumOfUsers() {
+    FollowACK::currentNumOfUsers++;
+}
 
-        int getCurrentNumOfUsers() const {
-            return currentNumOfUsers;
-        }
+std::string FollowACK::getUsersString() {
+    std::string result = "";
+    for (int i = 0; i < userNameList.size(); i++) {
+        if (i == userNameList.size() - 1)
+            result += userNameList[i];
+        else
+            result += userNameList[i] + " ";
+    }
+    return result;
+}
 
-        void increaseCurrentNumOfUsers() {
-            FollowACK::currentNumOfUsers++;
-        }
-
-    private:
-        std::string getUsersString() {
-                std::string result = "";
-                for (int i = 0; i < userNameList.size(); i++) {
-                    if (i == userNameList.size() - 1)
-                        result += userNameList[i];
-                    else
-                        result += userNameList[i] + " ";
-                }
-                return result;
-        }
-
-        std::string getStringFromChar() { return followOrUnfollow + "";}
-
-};
+std::string FollowACK::getStringFromChar() { return followOrUnfollow + ""; }

@@ -3,13 +3,7 @@
 //
 
 #include <messageEncoderDecoder.h>
-#include <Messages/Message.cpp>
-#include <Messages/Error.cpp>
-#include <Messages/Notification.cpp>
-#include <Messages/ACK.cpp>
-#include <Messages/FollowACK.cpp>
-#include <Messages/StatACK.cpp>
-#include <Messages/UserListACK.cpp>
+#include <include/Message.h>
 #include <iostream>
 
 messageEncoderDecoder::messageEncoderDecoder() : typeOfMessage(-1), bytesReaded(0), bytes(), isReaded(false), currentMessage(nullptr)  {}
@@ -265,7 +259,7 @@ void messageEncoderDecoder::errorRead(char nextByte) {
 }
 
 
-char* messageEncoderDecoder::encode(std::string line) {
+std::vector<char> messageEncoderDecoder::encode(std::string line) {
     std::vector<char> bytesToencode;
     size_t pos = 0;
     std::vector<std::string> tokens;
@@ -273,8 +267,7 @@ char* messageEncoderDecoder::encode(std::string line) {
         tokens.push_back(line.substr(0, pos));
         line.erase(0, pos + 1);
     }
-    if (tokens.size() == 0)
-        return nullptr;
+    tokens.push_back(line);
     if (tokens[0] == "REGISTER")
         return registerEncode(bytesToencode, tokens);
     if (tokens[0] == "LOGIN")
@@ -293,7 +286,7 @@ char* messageEncoderDecoder::encode(std::string line) {
         return statEncode(bytesToencode, tokens);
 }
 
-char* messageEncoderDecoder::registerEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
+std::vector<char> messageEncoderDecoder::registerEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
     char * opcode = new char[2];
     shortToBytes(1, opcode);
     bytesToencode.push_back(opcode[0]);
@@ -307,13 +300,10 @@ char* messageEncoderDecoder::registerEncode(std::vector<char> bytesToencode, std
     for (int i = 0; i < password.size(); i++)
         bytesToencode.push_back(password[i]);
 
-    char * toReturn = new char[bytesToencode.size()];
-    for (int i = 0; i < bytesToencode.size(); i++)
-        toReturn[i] = bytesToencode[i];
-    return toReturn;
+    return bytesToencode;
 }
 
-char* messageEncoderDecoder::loginEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
+std::vector<char> messageEncoderDecoder::loginEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
     char * opcode = new char[2];
     shortToBytes(2, opcode);
     bytesToencode.push_back(opcode[0]);
@@ -327,19 +317,18 @@ char* messageEncoderDecoder::loginEncode(std::vector<char> bytesToencode, std::v
     for (int i = 0; i < password.size(); i++)
         bytesToencode.push_back(password[i]);
 
-    char * toReturn = new char[bytesToencode.size()];
-    for (int i = 0; i < bytesToencode.size(); i++)
-        toReturn[i] = bytesToencode[i];
-    return toReturn;
+    return bytesToencode;
 }
 
-char* messageEncoderDecoder::logoutEncode() {
+std::vector<char> messageEncoderDecoder::logoutEncode() {
     char * opcode = new char[2];
     shortToBytes(3, opcode);
-    return opcode;
+    std::vector<char> bytestoEncode;
+    bytestoEncode.push_back(opcode[0]);
+    bytestoEncode.push_back(opcode[1]);
 }
 
-char* messageEncoderDecoder::followEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
+std::vector<char> messageEncoderDecoder::followEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
     char * opcode = new char[2];
     shortToBytes(4, opcode);
     bytesToencode.push_back(opcode[0]);
@@ -354,13 +343,10 @@ char* messageEncoderDecoder::followEncode(std::vector<char> bytesToencode, std::
         for (int j = 0; j < currentUser.size(); j++)
             bytesToencode.push_back(currentUser[j]);
     }
-    char * toReturn = new char[bytesToencode.size()];
-    for (int i = 0; i < bytesToencode.size(); i++)
-        toReturn[i] = bytesToencode[i];
-    return toReturn;
+    return bytesToencode;
 }
 
-char* messageEncoderDecoder::postEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
+std::vector<char> messageEncoderDecoder::postEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
     char * opcode = new char[2];
     shortToBytes(5, opcode);
     bytesToencode.push_back(opcode[0]);
@@ -370,14 +356,11 @@ char* messageEncoderDecoder::postEncode(std::vector<char> bytesToencode, std::ve
     std::vector<char> content(tokens[1].begin(), tokens[1].end());
     for (int i = 0; i < content.size(); i++)
         bytesToencode.push_back(content[i]);
-    content.push_back('\0');
-    char * toReturn = new char[bytesToencode.size()];
-    for (int i = 0; i < bytesToencode.size(); i++)
-        toReturn[i] = bytesToencode[i];
-    return toReturn;
+    bytesToencode.push_back('\0');
+    return bytesToencode;
 }
 
-char* messageEncoderDecoder::pmEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
+std::vector<char> messageEncoderDecoder::pmEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
     char *  opcode = new char[2];
     shortToBytes(6, opcode);
     bytesToencode.push_back(opcode[0]);
@@ -387,26 +370,25 @@ char* messageEncoderDecoder::pmEncode(std::vector<char> bytesToencode, std::vect
     std::vector<char> currentUser(tokens[1].begin(), tokens[1].end());
     for (int i = 0; i < currentUser.size(); i++)
         bytesToencode.push_back(currentUser[i]);
-    currentUser.push_back('\0');
+    bytesToencode.push_back('\0');
 
     std::vector<char> content(tokens[2].begin(), tokens[2].end());
     for (int i = 0; i < content.size(); i++)
         bytesToencode.push_back(content[i]);
-    currentUser.push_back('\0');
+    bytesToencode.push_back('\0');
 
-    char * toReturn = new char[bytesToencode.size()];
-    for (int i = 0; i < bytesToencode.size(); i++)
-        toReturn[i] = bytesToencode[i];
-    return toReturn;
+    return bytesToencode;
 }
 
-char* messageEncoderDecoder::userListEncode() {
+std::vector<char> messageEncoderDecoder::userListEncode() {
     char * opcode = new char[2];
     shortToBytes(7, opcode);
-    return opcode;
+    std::vector<char> bytestoEncode;
+    bytestoEncode.push_back(opcode[0]);
+    bytestoEncode.push_back(opcode[1]);
 }
 
-char* messageEncoderDecoder::statEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
+std::vector<char> messageEncoderDecoder::statEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
     char * opcode = new char[2];
     shortToBytes(8, opcode);
     bytesToencode.push_back(opcode[0]);
@@ -416,12 +398,9 @@ char* messageEncoderDecoder::statEncode(std::vector<char> bytesToencode, std::ve
     std::vector<char> currentUser(tokens[1].begin(), tokens[1].end());
     for (int i = 0; i < currentUser.size(); i++)
         bytesToencode.push_back(currentUser[i]);
-    currentUser.push_back('\0');
+    bytesToencode.push_back('\0');
 
-    char * toReturn = new char[bytesToencode.size()];
-    for (int i = 0; i < bytesToencode.size(); i++)
-        toReturn[i] = bytesToencode[i];
-    return toReturn;
+    return bytesToencode;
 }
 
 short messageEncoderDecoder::bytesToShort(char *bytesArr) {

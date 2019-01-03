@@ -3,33 +3,25 @@
 //
 
 #include <string>
+#include <include/Message.h>
+using namespace std;
+Message::Message(short opcode) : opcode_(opcode), isReaded(false) {}
 
-class Message {
+short Message::getOpcode_() const {
+    return opcode_;
+}
 
-    protected:
-        short opcode_;
-    private:
-        bool isReaded;
+void Message::setOpcode_(short opcode_) {
+    Message::opcode_ = opcode_;
+}
 
-    public:
-        Message(short opcode) : opcode_(opcode), isReaded(false) {}
+bool Message::IsReaded() const {
+    return isReaded;
+}
 
-        short getOpcode_() const {
-            return opcode_;
-        }
+void Message::setIsReaded(bool isReaded) {
+    Message::isReaded = isReaded;
+}
 
-        void setOpcode_(short opcode_) {
-            Message::opcode_ = opcode_;
-        }
+std::string Message::messageString() { return ""; }
 
-        bool IsReaded() const {
-            return isReaded;
-        }
-
-        void setIsReaded(bool isReaded) {
-            Message::isReaded = isReaded;
-        }
-
-        virtual std::string messageString() { return ""; }
-
-};

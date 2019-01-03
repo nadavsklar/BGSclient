@@ -17,7 +17,12 @@ if(Boost_FOUND)
             include/connectionHandler.h
             src/connectionHandler.cpp
             src/echoClient.cpp
-            makefile include/messageEncoderDecoder.h src/messageEncoderDecoder.cpp src/Messages/Message.cpp src/Messages/ACKOrError.cpp src/Messages/Error.cpp src/Messages/ACK.cpp src/Messages/Notification.cpp src/Messages/FollowACK.cpp src/Messages/StatACK.cpp src/Messages/UserListACK.cpp)
+            makefile include/messageEncoderDecoder.h
+            src/messageEncoderDecoder.cpp
+            src/Messages/Message.cpp src/Messages/ACKOrError.cpp
+            src/Messages/Error.cpp src/Messages/ACK.cpp
+            src/Messages/Notification.cpp src/Messages/FollowACK.cpp
+            src/Messages/StatACK.cpp src/Messages/UserListACK.cpp include/Message.h)
     target_link_libraries(BGSclient ${Boost_LIBRARIES})
 endif()
 set(CMAKE_CXX_STANDARD 11)

@@ -1,25 +1,13 @@
 //
 // Created by nadavsklar on 1/3/19.
 //
+#include <include/Message.h>
+using namespace std;
 
-#include <src/Messages/Message.cpp>
+ACKOrError::ACKOrError(short opcode) : Message(opcode), typeOfMessage(-1) {}
 
-class ACKOrError : public Message {
+short ACKOrError::getTypeOfMessage()  { return typeOfMessage; }
 
-    protected:
-        short typeOfMessage;
+std::string ACKOrError::messageString() { return ""; }
 
-    public:
-        ACKOrError(short opcode) : Message(opcode), typeOfMessage(-1) {}
-
-        short getTypeOfMessage()  {
-            return typeOfMessage;
-        }
-
-        virtual std::string messageString() { return ""; }
-
-    protected:
-        virtual void setTypeOfMessage(short typeOfMessage) {
-            ACKOrError::typeOfMessage = typeOfMessage;
-        }
-};
+void ACKOrError::setTypeOfMessage(short typeOfMessage) { ACKOrError::typeOfMessage = typeOfMessage; }

@@ -2,43 +2,26 @@
 // Created by nadavsklar on 1/3/19.
 //
 
-#include <src/Messages/ACK.cpp>
+#include <include/Message.h>
 
-class StatACK : public ACK {
+using namespace std;
 
-private:
-    short numOfPosts;
-    short numOfFollowers;
-    short numOfFollowing;
-public:
-    StatACK() : ACK(), numOfFollowers(-1), numOfPosts(-1), numOfFollowing(-1) {
-        typeOfMessage = 8;
-    }
 
-    short getNumOfPosts() const {
-        return numOfPosts;
-    }
+StatACK::StatACK() : ACK(), numOfFollowers(-1), numOfPosts(-1), numOfFollowing(-1) { typeOfMessage = 8; }
 
-    void setNumOfPosts(short numOfPosts) {
-        StatACK::numOfPosts = numOfPosts;
-    }
+short StatACK::getNumOfPosts() const { return numOfPosts; }
 
-    short getNumOfFollowers() const {
-        return numOfFollowers;
-    }
+void StatACK::setNumOfPosts(short numOfPosts) { StatACK::numOfPosts = numOfPosts; }
 
-    void setNumOfFollowers(short numOfFollowers) {
-        StatACK::numOfFollowers = numOfFollowers;
-    }
+short StatACK::getNumOfFollowers() const { return numOfFollowers; }
 
-    short getNumOfFollowing() const {
-        return numOfFollowing;
-    }
+void StatACK::setNumOfFollowers(short numOfFollowers) { StatACK::numOfFollowers = numOfFollowers; }
 
-    void setNumOfFollowing(short numOfFollowing) {
-        StatACK::numOfFollowing = numOfFollowing;
-    }
+short StatACK::getNumOfFollowing() const { return numOfFollowing; }
 
-    std::string messageString() { return "ACK 8 " + std::to_string(numOfPosts) + " " + std::to_string(numOfFollowers) +
-    " " + std::to_string(numOfFollowing);}
-};
+void StatACK::setNumOfFollowing(short numOfFollowing) { StatACK::numOfFollowing = numOfFollowing; }
+
+std::string StatACK::messageString() {
+    return "ACK 8 " + std::to_string(numOfPosts) + " " + std::to_string(numOfFollowers) +
+           " " + std::to_string(numOfFollowing);
+}

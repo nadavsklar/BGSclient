@@ -2,17 +2,9 @@
 // Created by nadavsklar on 1/3/19.
 //
 
-#include <src/Messages/ACKOrError.cpp>
+#include <include/Message.h>
+using namespace std;
 
-class ACK : public ACKOrError {
+ACK::ACK() : ACKOrError(10){};
 
-    public:
-        ACK() : ACKOrError(10){};
-
-        std::string messageString() { return "ACK " + typeOfMessage; }
-
-    public:
-        virtual void setTypeOfMessage(short typeOfMessage) {
-            ACKOrError::typeOfMessage = typeOfMessage;
-        }
-};
+std::string ACK::messageString() { return "ACK " + typeOfMessage; }

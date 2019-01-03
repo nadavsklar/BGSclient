@@ -2,16 +2,9 @@
 // Created by nadavsklar on 1/3/19.
 //
 
-#include <src/Messages/ACKOrError.cpp>
+#include <include/Message.h>
+using namespace std;
 
-class Error : public ACKOrError {
+Error::Error() : ACKOrError(11) { };
 
-    public:
-        Error() : ACKOrError(11) { };
-
-        std::string messageString() { return "Error " + typeOfMessage; }
-
-        void setTypeOfMessage(short typeOfMessage) {
-            ACKOrError::typeOfMessage = typeOfMessage;
-        }
-};
+std::string Error::messageString() { return "Error " + typeOfMessage; }
