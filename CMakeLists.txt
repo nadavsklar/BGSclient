@@ -22,7 +22,7 @@ if(Boost_FOUND)
             src/Messages/Message.cpp src/Messages/ACKOrError.cpp
             src/Messages/Error.cpp src/Messages/ACK.cpp
             src/Messages/Notification.cpp src/Messages/FollowACK.cpp
-            src/Messages/StatACK.cpp src/Messages/UserListACK.cpp include/Message.h)
+            src/Messages/StatACK.cpp src/Messages/UserListACK.cpp include/Message.h src/ReadTask.cpp include/ReadTask.h src/WriteTask.cpp include/WriteTask.h)
     target_link_libraries(BGSclient ${Boost_LIBRARIES})
 endif()
 set(CMAKE_CXX_STANDARD 11)
