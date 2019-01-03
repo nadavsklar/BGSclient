@@ -3,10 +3,14 @@
 //
 
 #include <messageEncoderDecoder.h>
+#include <Messages/Message.cpp>
+#include <Messages/Error.cpp>
+#include <Messages/Notification.cpp>
+#include <Messages/ACK.cpp>
 
-messageEncoderDecoder::messageEncoderDecoder() : typeOfMessage(-1), bytesReaded(0), currentMessage(), bytes()  {}
+messageEncoderDecoder::messageEncoderDecoder() : typeOfMessage(-1), bytesReaded(0), bytes(), isReaded(false), currentMessage(nullptr)  {}
 
-std::string messageEncoderDecoder::decodeNextByte(char nextByte) {
+Message* messageEncoderDecoder::decodeNextByte(char nextByte) {
     if (typeOfMessage == -1) {
         currentMessage = nullptr;
         bytesReaded++;
@@ -19,23 +23,25 @@ std::string messageEncoderDecoder::decodeNextByte(char nextByte) {
             bytes.clear();
             switch (typeOfMessage) {
                 case 9:
+                    currentMessage = new Notification();
                     break;
                 case 10:
+                    currentMessage = new ACK();
                     break;
                 case 11:
-                    currentMessage = "ERROR ";
+                    currentMessage = new Error();
                     break;
                 default:
                     break;
             }
         }
-    }
-    else {
+    } else {
         switch (typeOfMessage) {
             case 9:
                 ackRead(nextByte);
                 break;
             case 10:
+                notificationRead(nextByte);
                 break;
             case 11:
                 errorRead(nextByte);
@@ -44,6 +50,14 @@ std::string messageEncoderDecoder::decodeNextByte(char nextByte) {
                 break;
         }
     }
+    if (isReaded) {
+        bytesReaded = 0;
+        typeOfMessage = -1;
+        return currentMessage;
+    }
+    else
+        return nullptr;
+
 }
 
 void messageEncoderDecoder::ackRead(char nextByte) {
@@ -63,9 +77,12 @@ void messageEncoderDecoder::errorRead(char nextByte) {
         bytesArr[0] = bytes[0];
         bytesArr[1] = bytes[1];
         short typeOfMessageReceived = bytesToShort(bytesArr);
-        currentMessage += typeOfMessageReceived + ">";
+        bytes.clear();
+        currentMessage += typeOfMessageReceived;
+        isReaded = true;
     }
 }
+
 
 char* messageEncoderDecoder::encode(std::string line) {
 

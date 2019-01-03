@@ -8,6 +8,7 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <list>
 #include <zconf.h>
+#include <src/Messages/Message.cpp>
 
 using boost::asio::ip::tcp;
 
@@ -17,13 +18,14 @@ class messageEncoderDecoder {
         const std::string encoding = "utf-8";
         short typeOfMessage;
         int bytesReaded;
+        bool isReaded;
         std::vector<char> bytes;
-        std::string currentMessage;
+        Message* currentMessage;
 
     public:
         messageEncoderDecoder();
         ~messageEncoderDecoder();
-        std::string decodeNextByte(char nextByte);
+        Message* decodeNextByte(char nextByte);
         char* encode(std::string line);
         short bytesToShort(char* bytesArr);
         void shortToBytes(short num, char* bytesArr);
