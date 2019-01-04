@@ -7,4 +7,4 @@ using namespace std;
 
 Error::Error() : ACKOrError(11) { };
 
-std::string Error::messageString() { return "Error " + typeOfMessage; }
+std::string Error::messageString() { return "Error " + to_string(typeOfMessage); }

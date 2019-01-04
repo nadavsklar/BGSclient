@@ -15,7 +15,7 @@ void Message::setOpcode_(short opcode_) {
     Message::opcode_ = opcode_;
 }
 
-bool Message::IsReaded() const {
+bool Message::IsReaded() {
     return isReaded;
 }
 

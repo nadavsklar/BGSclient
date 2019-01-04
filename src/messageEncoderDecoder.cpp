@@ -6,7 +6,7 @@
 #include <include/Message.h>
 #include <iostream>
 
-messageEncoderDecoder::messageEncoderDecoder() : typeOfMessage(-1), bytesReaded(0), bytes(), isReaded(false), currentMessage(nullptr)  {}
+messageEncoderDecoder::messageEncoderDecoder() : typeOfMessage(-1), bytesReaded(0), bytes(), currentMessage(nullptr)  {}
 
 Message* messageEncoderDecoder::decodeNextByte(char nextByte) {
     if (typeOfMessage == -1) {
@@ -48,7 +48,7 @@ Message* messageEncoderDecoder::decodeNextByte(char nextByte) {
                 break;
         }
     }
-    if (isReaded) {
+    if (currentMessage != nullptr && currentMessage->IsReaded()) {
         bytesReaded = 0;
         typeOfMessage = -1;
         return currentMessage;
@@ -66,7 +66,10 @@ void messageEncoderDecoder::ackRead(char nextByte) {
                 char * bytesArr = new char[bytes.size()];
                 bytesArr[0] = bytes[0];
                 bytesArr[1] = bytes[1];
-                tempMessage->setTypeOfMessage(bytesToShort(bytesArr));
+                short type = bytesToShort(bytesArr);
+                tempMessage->setTypeOfMessage(type);
+                if (type != 4 & type != 7 & type != 8)
+                    tempMessage->setIsReaded(true);
                 bytes.clear();
                 delete bytesArr;
             }
@@ -243,17 +246,18 @@ void messageEncoderDecoder::notificationRead(char nextByte) {
 }
 
 void messageEncoderDecoder::errorRead(char nextByte) {
+    Error *tempMessage = ((Error*)currentMessage);
     if (bytes.size() < 2) {
         bytes.push_back(nextByte);
     }
-    else {
+    if (bytes.size() == 2){
         char *bytesArr = new char[2];
         bytesArr[0] = bytes[0];
         bytesArr[1] = bytes[1];
         short typeOfMessageReceived = bytesToShort(bytesArr);
         ((Error*)currentMessage)->setTypeOfMessage(typeOfMessageReceived);
         bytes.clear();
-        isReaded = true;
+        tempMessage->setIsReaded(true);
         delete bytesArr;
     }
 }
@@ -284,6 +288,8 @@ std::vector<char> messageEncoderDecoder::encode(std::string line) {
         return userListEncode();
     if (tokens[0] == "STAT")
         return statEncode(bytesToencode, tokens);
+    std::cout << "Not valid command!" << std::endl;
+    return bytesToencode;
 }
 
 std::vector<char> messageEncoderDecoder::registerEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
@@ -412,4 +418,8 @@ short messageEncoderDecoder::bytesToShort(char *bytesArr) {
 void messageEncoderDecoder::shortToBytes(short num, char *bytesArr) {
     bytesArr[0] = ((num >> 8) & 0xFF);
     bytesArr[1] = (num & 0xFF);
+}
+
+messageEncoderDecoder::~messageEncoderDecoder() {
+    delete currentMessage;
 }

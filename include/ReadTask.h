@@ -6,13 +6,15 @@
 #define BGSCLIENT_READTASK_H
 
 #include <include/connectionHandler.h>
-
+using namespace std;
 
 class ReadTask {
     private:
-        ConnectionHandler* handler;
+        ConnectionHandler& handler;
+        bool& shouldTerminate;
+        bool& failLogout;
     public:
-        ReadTask(ConnectionHandler* handler);
+        ReadTask(ConnectionHandler& handler, bool& shouldTerminate, bool& failLogout);
         void run();
 };
 

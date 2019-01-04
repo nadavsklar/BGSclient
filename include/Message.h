@@ -20,7 +20,7 @@ class Message{
         Message(short opcode);
         short getOpcode_() const ;
         void setOpcode_(short opcode);
-        bool IsReaded() const;
+        bool IsReaded();
         void setIsReaded(bool isReaded);
         virtual std::string messageString();
 };

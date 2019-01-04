@@ -19,7 +19,6 @@ private:
     const std::string encoding = "utf-8";
     short typeOfMessage;
     int bytesReaded;
-    bool isReaded;
     std::vector<char> bytes;
     Message *currentMessage;
 

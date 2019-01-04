@@ -1,5 +1,6 @@
 #include <connectionHandler.h>
- 
+#include <include/messageEncoderDecoder.h>
+
 using boost::asio::ip::tcp;
 
 using std::cin;
@@ -64,7 +65,22 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 }
  
 bool ConnectionHandler::getLine(std::string& line) {
-    return getFrameAscii(line, '\n');
+    messageEncoderDecoder* messageEncoderDecoder1 = new messageEncoderDecoder();
+    bool endRead = false;
+    char ch;
+    try {
+        do {
+            getBytes(&ch, 1);
+            Message* currentMessage = messageEncoderDecoder1->decodeNextByte(ch);
+            if (currentMessage != nullptr) {
+                endRead = true;
+                line = currentMessage->messageString();
+            }
+        } while(!endRead);
+    }
+    catch (std::exception& e) { }
+
+    return true;
 }
 
 bool ConnectionHandler::sendLine(std::string& line) {

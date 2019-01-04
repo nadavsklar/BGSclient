@@ -7,12 +7,15 @@
 
 
 #include "connectionHandler.h"
+using namespace std;
 
 class WriteTask {
     private:
-        ConnectionHandler* handler;
-    public:
-        WriteTask(ConnectionHandler* handler);
+        ConnectionHandler& handler;
+        bool& shouldTerminate;
+        bool& failLogout;
+public:
+        WriteTask(ConnectionHandler& handler, bool& shouldTerminate, bool& failLogout);
         void run();
 };
 
