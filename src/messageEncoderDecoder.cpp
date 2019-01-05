@@ -219,6 +219,8 @@ void messageEncoderDecoder::userListRead(char nextByte) {
                 tempMessage->increaseCurrentNumOfUsers();
                 bytes.clear();
                 delete bytesArr;
+                if (tempMessage->getCurrentNumOfUsers() == tempMessage->getNumOfUsers())
+                    tempMessage->setIsReaded(true);
             }
         }
         else
@@ -376,7 +378,14 @@ std::vector<char> messageEncoderDecoder::postEncode(std::vector<char> bytesToenc
     bytesToencode.push_back(opcode[1]);
     delete opcode;
 
-    std::vector<char> content(tokens[1].begin(), tokens[1].end());
+    std::string messageContent = "";
+    for (int i = 1; i < tokens.size(); i++) {
+        if (i == tokens.size() - 1)
+            messageContent += tokens[i];
+        else
+            messageContent += (tokens[i] + " ");
+    }
+    std::vector<char> content(messageContent.begin(), messageContent.end());
     for (int i = 0; i < content.size(); i++)
         bytesToencode.push_back(content[i]);
     bytesToencode.push_back('\0');
@@ -395,7 +404,14 @@ std::vector<char> messageEncoderDecoder::pmEncode(std::vector<char> bytesToencod
         bytesToencode.push_back(currentUser[i]);
     bytesToencode.push_back('\0');
 
-    std::vector<char> content(tokens[2].begin(), tokens[2].end());
+    std::string messageContent = "";
+    for (int i = 2; i < tokens.size(); i++) {
+        if (i == tokens.size() - 1)
+            messageContent += tokens[i];
+        else
+            messageContent += (tokens[i] + " ");
+    }
+    std::vector<char> content(messageContent.begin(), messageContent.end());
     for (int i = 0; i < content.size(); i++)
         bytesToencode.push_back(content[i]);
     bytesToencode.push_back('\0');
@@ -409,6 +425,7 @@ std::vector<char> messageEncoderDecoder::userListEncode() {
     std::vector<char> bytestoEncode;
     bytestoEncode.push_back(opcode[0]);
     bytestoEncode.push_back(opcode[1]);
+    return bytestoEncode;
 }
 
 std::vector<char> messageEncoderDecoder::statEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {

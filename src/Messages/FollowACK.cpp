@@ -54,5 +54,3 @@ std::string FollowACK::getUsersString() {
     }
     return result;
 }
-
-std::string FollowACK::getStringFromChar() { return followOrUnfollow + ""; }

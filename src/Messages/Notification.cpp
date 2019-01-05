@@ -27,7 +27,7 @@ std::string Notification::getStringPrivateOrPublic() {
         case '0':
             return "PM";
         case '1':
-            return "Private";
+            return "Public";
         default:
             return "";
     }

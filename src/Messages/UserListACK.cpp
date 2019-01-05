@@ -7,7 +7,7 @@
 
 using namespace std;
 
-UserListACK::UserListACK() : ACK(), numOfUsers(0), userNameList(), currentNumOfUsers(0) { typeOfMessage = 7; }
+UserListACK::UserListACK() : ACK(), numOfUsers(-1), userNameList(), currentNumOfUsers(0) { typeOfMessage = 7; }
 
 short UserListACK::getNumOfUsers() const { return numOfUsers; }
 
