@@ -2,8 +2,8 @@
 // Created by nadavsklar on 1/3/19.
 //
 
-#include "WriteTask.h"
-#include <include/messageEncoderDecoder.h>
+#include "../include/WriteTask.h"
+#include "../include/messageEncoderDecoder.h"
 #include <iostream>
 #include <thread>
 using namespace std;

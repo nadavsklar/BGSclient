@@ -1,8 +1,8 @@
 #include <stdlib.h>
-#include <connectionHandler.h>
-#include <include/messageEncoderDecoder.h>
-#include <include/ReadTask.h>
-#include <include/WriteTask.h>
+#include "../include/connectionHandler.h"
+#include "../include/messageEncoderDecoder.h"
+#include "../include/ReadTask.h"
+#include "../include/WriteTask.h"
 #include <thread>
 
 using namespace std;

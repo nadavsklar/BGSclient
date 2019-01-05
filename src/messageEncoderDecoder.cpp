@@ -2,8 +2,8 @@
 // Created by nadavsklar on 1/3/19.
 //
 
-#include <messageEncoderDecoder.h>
-#include <include/Message.h>
+#include "../include/messageEncoderDecoder.h"
+#include "../include/Message.h"
 #include <iostream>
 
 messageEncoderDecoder::messageEncoderDecoder() : typeOfMessage(-1), bytesReaded(0), bytes(), currentMessage(nullptr)  {}

@@ -2,11 +2,11 @@
 // Created by nadavsklar on 1/3/19.
 //
 
-#include <include/messageEncoderDecoder.h>
+#include "../include/messageEncoderDecoder.h"
 #include <iostream>
 #include <thread>
-#include <ReadTask.h>
-#include <include/connectionHandler.h>
+#include "../include/ReadTask.h"
+#include "../include/connectionHandler.h"
 using namespace std;
 
 ReadTask::ReadTask(ConnectionHandler& handler, bool& shouldTerminate, bool& failLogout) : handler(handler), shouldTerminate(shouldTerminate),

@@ -3,7 +3,7 @@
 //
 
 #include <string>
-#include <include/Message.h>
+#include "../include/Message.h"
 using namespace std;
 Message::Message(short opcode) : opcode_(opcode), isReaded(false) {}
 

@@ -5,7 +5,7 @@
 #ifndef BGSCLIENT_READTASK_H
 #define BGSCLIENT_READTASK_H
 
-#include <include/connectionHandler.h>
+#include "../include/connectionHandler.h"
 using namespace std;
 
 class ReadTask {
