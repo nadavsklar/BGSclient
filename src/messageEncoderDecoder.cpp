@@ -358,7 +358,10 @@ std::vector<char> messageEncoderDecoder::followEncode(std::vector<char> bytesToe
     shortToBytes(4, opcode);
     bytesToencode.push_back(opcode[0]);
     bytesToencode.push_back(opcode[1]);
-    bytesToencode.push_back(tokens[1][0]);
+    if (tokens[1][0] == '0')
+        bytesToencode.push_back('\0');
+    else
+        bytesToencode.push_back('\1');
     shortToBytes(std::stoi(tokens[2]), opcode);
     bytesToencode.push_back(opcode[0]);
     bytesToencode.push_back(opcode[1]);

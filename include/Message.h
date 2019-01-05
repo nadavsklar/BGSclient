@@ -16,7 +16,7 @@ class Message{
     private:
         bool isReaded;
 
-    public:
+public:
         Message(short opcode);
         short getOpcode_() const ;
         void setOpcode_(short opcode);
@@ -35,6 +35,8 @@ class ACKOrError : public Message {
         short getTypeOfMessage();
         virtual std::string messageString();
         void setTypeOfMessage(short typeOfMessage);
+
+
 };
 
 class ACK : public ACKOrError {
@@ -42,6 +44,7 @@ class ACK : public ACKOrError {
     public:
         ACK();
         virtual std::string messageString();
+
 };
 
 class Error : public ACKOrError {
@@ -49,6 +52,7 @@ class Error : public ACKOrError {
     public:
         Error();
         std::string messageString();
+
 };
 
 class Notification : public Message{
