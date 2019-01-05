@@ -7,4 +7,4 @@ using namespace std;
 
 ACK::ACK() : ACKOrError(10){};
 
-std::string ACK::messageString() { return "ACK " + typeOfMessage; }
+std::string ACK::messageString() { return "ACK " + to_string(typeOfMessage); }

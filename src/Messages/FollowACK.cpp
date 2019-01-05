@@ -26,7 +26,7 @@ void FollowACK::addUserNameList(const std::string &userName) {
     FollowACK::userNameList.push_back(userName);
 }
 
-std::string FollowACK::messageString() { return "ACK 4 " + getStringFromChar() + " " + getUsersString(); }
+std::string FollowACK::messageString() { return "ACK 4 " + to_string(numOfUsers) + " " + getUsersString(); }
 
 char FollowACK::getFollowOrUnfollow() const {
     return followOrUnfollow;

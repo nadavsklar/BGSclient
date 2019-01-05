@@ -70,6 +70,20 @@ void messageEncoderDecoder::ackRead(char nextByte) {
                 tempMessage->setTypeOfMessage(type);
                 if (type != 4 & type != 7 & type != 8)
                     tempMessage->setIsReaded(true);
+                else {
+                    if (type == 4) {
+                        currentMessage = new FollowACK();
+                        ((FollowACK*)currentMessage)->setTypeOfMessage(4);
+                    }
+                    if (type == 7) {
+                        currentMessage = new UserListACK();
+                        ((UserListACK*)currentMessage)->setTypeOfMessage(7);
+                    }
+                    if (type == 8) {
+                        currentMessage = new StatACK();
+                        ((StatACK*)currentMessage)->setTypeOfMessage(8);
+                    }
+                }
                 bytes.clear();
                 delete bytesArr;
             }
@@ -120,6 +134,8 @@ void messageEncoderDecoder::followACKRead(char nextByte) {
                 tempMessage->increaseCurrentNumOfUsers();
                 bytes.clear();
                 delete bytesArr;
+                if (tempMessage->getCurrentNumOfUsers() == tempMessage->getNumOfUsers())
+                    tempMessage->setIsReaded(true);
             }
         }
         else
@@ -332,6 +348,7 @@ std::vector<char> messageEncoderDecoder::logoutEncode() {
     std::vector<char> bytestoEncode;
     bytestoEncode.push_back(opcode[0]);
     bytestoEncode.push_back(opcode[1]);
+    return bytestoEncode;
 }
 
 std::vector<char> messageEncoderDecoder::followEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens) {
@@ -344,7 +361,7 @@ std::vector<char> messageEncoderDecoder::followEncode(std::vector<char> bytesToe
     bytesToencode.push_back(opcode[0]);
     bytesToencode.push_back(opcode[1]);
     for (int i = 3; i < tokens.size(); i++) {
-        std::vector<char> currentUser(tokens[2].begin(), tokens[2].end());
+        std::vector<char> currentUser(tokens[i].begin(), tokens[i].end());
         currentUser.push_back('\0');
         for (int j = 0; j < currentUser.size(); j++)
             bytesToencode.push_back(currentUser[j]);
