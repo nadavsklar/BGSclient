@@ -21,8 +21,8 @@ std::string UserListACK::messageString() { return "ACK 7 " + std::to_string(numO
 
 std::string UserListACK::getUsersString() {
     std::string result = "";
-    for (int i = 0; i < userNameList.size(); i++) {
-        if (i == userNameList.size() - 1)
+    for (int i = 0; i < (int)userNameList.size(); i++) {
+        if (i == (int)userNameList.size() - 1)
             result += userNameList[i];
         else
             result += userNameList[i] + " ";

@@ -22,7 +22,7 @@ void WriteTask::run() {
         std::vector<char> bytesToSend = med->encode(line);
         if (!bytesToSend.empty()) {
             char bytesArr[bytesToSend.size()];
-            for (int i = 0; i < bytesToSend.size(); i++)
+            for (int i = 0; i < (int)bytesToSend.size(); i++)
                 bytesArr[i] = bytesToSend[i];
             if (!handler.sendBytes(bytesArr, bytesToSend.size())) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
@@ -30,8 +30,10 @@ void WriteTask::run() {
             }
             if (line == "LOGOUT") {
                 while (1) {
-                    if (shouldTerminate)
+                    if (shouldTerminate) {
+                        delete med;
                         return;
+                    }
                     else {
                         if (failLogout) {
                             failLogout = false;

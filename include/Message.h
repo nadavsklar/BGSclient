@@ -23,6 +23,7 @@ public:
         bool IsReaded();
         void setIsReaded(bool isReaded);
         virtual std::string messageString();
+        virtual ~Message() = 0;
 };
 
 class ACKOrError : public Message {
@@ -35,7 +36,7 @@ class ACKOrError : public Message {
         short getTypeOfMessage();
         virtual std::string messageString();
         void setTypeOfMessage(short typeOfMessage);
-
+        virtual ~ACKOrError() = 0;
 
 };
 
@@ -44,7 +45,6 @@ class ACK : public ACKOrError {
     public:
         ACK();
         virtual std::string messageString();
-
 };
 
 class Error : public ACKOrError {

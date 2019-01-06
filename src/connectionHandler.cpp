@@ -66,12 +66,13 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
  
 bool ConnectionHandler::getLine(std::string& line) {
     messageEncoderDecoder* messageEncoderDecoder1 = new messageEncoderDecoder();
+    Message* currentMessage;
     bool endRead = false;
     char ch;
     try {
         do {
             getBytes(&ch, 1);
-            Message* currentMessage = messageEncoderDecoder1->decodeNextByte(ch);
+            currentMessage = messageEncoderDecoder1->decodeNextByte(ch);
             if (currentMessage != nullptr) {
                 endRead = true;
                 line = currentMessage->messageString();
@@ -79,7 +80,7 @@ bool ConnectionHandler::getLine(std::string& line) {
         } while(!endRead);
     }
     catch (std::exception& e) { }
-
+    delete messageEncoderDecoder1;
     return true;
 }
 

@@ -11,3 +11,5 @@ short ACKOrError::getTypeOfMessage()  { return typeOfMessage; }
 std::string ACKOrError::messageString() { return ""; }
 
 void ACKOrError::setTypeOfMessage(short typeOfMessage) { ACKOrError::typeOfMessage = typeOfMessage; }
+
+ACKOrError::~ACKOrError() {}

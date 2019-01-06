@@ -7,7 +7,9 @@
 using namespace std;
 
 
-StatACK::StatACK() : ACK(), numOfFollowers(-1), numOfPosts(-1), numOfFollowing(-1) { typeOfMessage = 8; }
+StatACK::StatACK() : ACK(), numOfPosts(-1), numOfFollowers(-1), numOfFollowing(-1) {
+    typeOfMessage = 8;
+}
 
 short StatACK::getNumOfPosts() const { return numOfPosts; }
 

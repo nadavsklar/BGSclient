@@ -5,6 +5,6 @@
 #include "../include/Message.h"
 using namespace std;
 
-ACK::ACK() : ACKOrError(10){};
+ACK::ACK() : ACKOrError(10){}
 
 std::string ACK::messageString() { return "ACK " + to_string(typeOfMessage); }

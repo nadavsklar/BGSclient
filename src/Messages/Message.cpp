@@ -25,3 +25,5 @@ void Message::setIsReaded(bool isReaded) {
 
 std::string Message::messageString() { return ""; }
 
+Message::~Message() {}
+

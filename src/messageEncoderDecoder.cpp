@@ -18,6 +18,7 @@ Message* messageEncoderDecoder::decodeNextByte(char nextByte) {
             bytesArr[0] = bytes[0];
             bytesArr[1] = bytes[1];
             typeOfMessage = bytesToShort(bytesArr);
+            delete[] bytesArr;
             bytes.clear();
             switch (typeOfMessage) {
                 case 9:
@@ -68,7 +69,7 @@ void messageEncoderDecoder::ackRead(char nextByte) {
                 bytesArr[1] = bytes[1];
                 short type = bytesToShort(bytesArr);
                 tempMessage->setTypeOfMessage(type);
-                if (type != 4 & type != 7 & type != 8)
+                if ((type != 4) & ((type != 7) & (type != 8)))
                     tempMessage->setIsReaded(true);
                 else {
                     if (type == 4) {
@@ -85,7 +86,7 @@ void messageEncoderDecoder::ackRead(char nextByte) {
                     }
                 }
                 bytes.clear();
-                delete bytesArr;
+                delete[] bytesArr;
             }
         }
     }
@@ -117,7 +118,7 @@ void messageEncoderDecoder::followACKRead(char nextByte) {
                 bytesArr[1] = bytes[1];
                 tempMessage->setNumOfUsers(bytesToShort(bytesArr));
                 bytes.clear();
-                delete bytesArr;
+                delete[] bytesArr;
             }
         }
     }
@@ -127,13 +128,13 @@ void messageEncoderDecoder::followACKRead(char nextByte) {
                 bytes.push_back(nextByte);
             else {
                 char *bytesArr = new char[bytes.size()];
-                for (int i = 0; i < bytes.size(); i++)
+                for (int i = 0; i < (int)bytes.size(); i++)
                     bytesArr[i] = bytes[i];
                 std::string currentUser(static_cast<const char*>(bytesArr), bytes.size());
                 tempMessage->addUserNameList(currentUser);
                 tempMessage->increaseCurrentNumOfUsers();
                 bytes.clear();
-                delete bytesArr;
+                delete[] bytesArr;
                 if (tempMessage->getCurrentNumOfUsers() == tempMessage->getNumOfUsers())
                     tempMessage->setIsReaded(true);
             }
@@ -154,7 +155,7 @@ void messageEncoderDecoder::statRead(char nextByte) {
                 bytesArr[1] = bytes[1];
                 tempMessage->setNumOfPosts(bytesToShort(bytesArr));
                 bytes.clear();
-                delete bytesArr;
+                delete[] bytesArr;
             }
         }
     }
@@ -168,7 +169,7 @@ void messageEncoderDecoder::statRead(char nextByte) {
                     bytesArr[1] = bytes[1];
                     tempMessage->setNumOfFollowers(bytesToShort(bytesArr));
                     bytes.clear();
-                    delete bytesArr;
+                    delete[] bytesArr;
                 }
             }
         }
@@ -183,7 +184,7 @@ void messageEncoderDecoder::statRead(char nextByte) {
                         tempMessage->setNumOfFollowing(bytesToShort(bytesArr));
                         tempMessage->setIsReaded(true);
                         bytes.clear();
-                        delete bytesArr;
+                        delete[] bytesArr;
                     }
                 }
             }
@@ -202,7 +203,7 @@ void messageEncoderDecoder::userListRead(char nextByte) {
                 bytesArr[1] = bytes[1];
                 tempMessage->setNumOfUsers(bytesToShort(bytesArr));
                 bytes.clear();
-                delete bytesArr;
+                delete[] bytesArr;
             }
         }
     }
@@ -212,13 +213,13 @@ void messageEncoderDecoder::userListRead(char nextByte) {
                 bytes.push_back(nextByte);
             else {
                 char *bytesArr = new char[bytes.size()];
-                for (int i = 0; i < bytes.size(); i++)
+                for (int i = 0; i < (int)bytes.size(); i++)
                     bytesArr[i] = bytes[i];
                 std::string currentUser(static_cast<const char*>(bytesArr), bytes.size());
                 tempMessage->addUserNameList(currentUser);
                 tempMessage->increaseCurrentNumOfUsers();
                 bytes.clear();
-                delete bytesArr;
+                delete[] bytesArr;
                 if (tempMessage->getCurrentNumOfUsers() == tempMessage->getNumOfUsers())
                     tempMessage->setIsReaded(true);
             }
@@ -238,12 +239,12 @@ void messageEncoderDecoder::notificationRead(char nextByte) {
                 bytes.push_back(nextByte);
             else {
                 char *bytesArr = new char[bytes.size()];
-                for (int i = 0; i < bytes.size(); i++)
+                for (int i = 0; i < (int)bytes.size(); i++)
                     bytesArr[i] = bytes[i];
                 std::string currentPostingUser(static_cast<const char*>(bytesArr), bytes.size());
                 tempMessage->setPostingUser(currentPostingUser);
                 bytes.clear();
-                delete bytesArr;
+                delete[] bytesArr;
             }
         }
         else {
@@ -251,13 +252,13 @@ void messageEncoderDecoder::notificationRead(char nextByte) {
                 bytes.push_back(nextByte);
             else {
                 char *bytesArr = new char[bytes.size()];
-                for (int i = 0; i < bytes.size(); i++)
+                for (int i = 0; i < (int)bytes.size(); i++)
                     bytesArr[i] = bytes[i];
                 std::string currentContent(static_cast<const char*>(bytesArr), bytes.size());
                 tempMessage->setContent(currentContent);
                 bytes.clear();
                 tempMessage->setIsReaded(true);
-                delete bytesArr;
+                delete[] bytesArr;
             }
         }
     }
@@ -276,7 +277,7 @@ void messageEncoderDecoder::errorRead(char nextByte) {
         ((Error*)currentMessage)->setTypeOfMessage(typeOfMessageReceived);
         bytes.clear();
         tempMessage->setIsReaded(true);
-        delete bytesArr;
+        delete[] bytesArr;
     }
 }
 
@@ -317,13 +318,13 @@ std::vector<char> messageEncoderDecoder::registerEncode(std::vector<char> bytesT
     bytesToencode.push_back(opcode[1]);
     std::vector<char> userName(tokens[1].begin(), tokens[1].end());
     userName.push_back('\0');
-    for (int i = 0; i < userName.size(); i++)
+    for (int i = 0; i < (int)userName.size(); i++)
         bytesToencode.push_back(userName[i]);
     std::vector<char> password(tokens[2].begin(), tokens[2].end());
     password.push_back('\0');
-    for (int i = 0; i < password.size(); i++)
+    for (int i = 0; i < (int)password.size(); i++)
         bytesToencode.push_back(password[i]);
-
+    delete[] opcode;
     return bytesToencode;
 }
 
@@ -334,13 +335,13 @@ std::vector<char> messageEncoderDecoder::loginEncode(std::vector<char> bytesToen
     bytesToencode.push_back(opcode[1]);
     std::vector<char> userName(tokens[1].begin(), tokens[1].end());
     userName.push_back('\0');
-    for (int i = 0; i < userName.size(); i++)
+    for (int i = 0; i < (int)userName.size(); i++)
         bytesToencode.push_back(userName[i]);
     std::vector<char> password(tokens[2].begin(), tokens[2].end());
     password.push_back('\0');
-    for (int i = 0; i < password.size(); i++)
+    for (int i = 0; i < (int)password.size(); i++)
         bytesToencode.push_back(password[i]);
-
+    delete[] opcode;
     return bytesToencode;
 }
 
@@ -350,6 +351,7 @@ std::vector<char> messageEncoderDecoder::logoutEncode() {
     std::vector<char> bytestoEncode;
     bytestoEncode.push_back(opcode[0]);
     bytestoEncode.push_back(opcode[1]);
+    delete[] opcode;
     return bytestoEncode;
 }
 
@@ -365,12 +367,13 @@ std::vector<char> messageEncoderDecoder::followEncode(std::vector<char> bytesToe
     shortToBytes(std::stoi(tokens[2]), opcode);
     bytesToencode.push_back(opcode[0]);
     bytesToencode.push_back(opcode[1]);
-    for (int i = 3; i < tokens.size(); i++) {
+    for (int i = 3; i < (int)tokens.size(); i++) {
         std::vector<char> currentUser(tokens[i].begin(), tokens[i].end());
         currentUser.push_back('\0');
-        for (int j = 0; j < currentUser.size(); j++)
+        for (int j = 0; j < (int)currentUser.size(); j++)
             bytesToencode.push_back(currentUser[j]);
     }
+    delete[] opcode;
     return bytesToencode;
 }
 
@@ -379,17 +382,17 @@ std::vector<char> messageEncoderDecoder::postEncode(std::vector<char> bytesToenc
     shortToBytes(5, opcode);
     bytesToencode.push_back(opcode[0]);
     bytesToencode.push_back(opcode[1]);
-    delete opcode;
+    delete[] opcode;
 
     std::string messageContent = "";
-    for (int i = 1; i < tokens.size(); i++) {
-        if (i == tokens.size() - 1)
+    for (int i = 1; i < (int)tokens.size(); i++) {
+        if (i == (int)(tokens.size() - 1))
             messageContent += tokens[i];
         else
             messageContent += (tokens[i] + " ");
     }
     std::vector<char> content(messageContent.begin(), messageContent.end());
-    for (int i = 0; i < content.size(); i++)
+    for (int i = 0; i < (int)content.size(); i++)
         bytesToencode.push_back(content[i]);
     bytesToencode.push_back('\0');
     return bytesToencode;
@@ -400,25 +403,24 @@ std::vector<char> messageEncoderDecoder::pmEncode(std::vector<char> bytesToencod
     shortToBytes(6, opcode);
     bytesToencode.push_back(opcode[0]);
     bytesToencode.push_back(opcode[1]);
-    delete opcode;
+    delete[] opcode;
 
     std::vector<char> currentUser(tokens[1].begin(), tokens[1].end());
-    for (int i = 0; i < currentUser.size(); i++)
+    for (int i = 0; i < (int)currentUser.size(); i++)
         bytesToencode.push_back(currentUser[i]);
     bytesToencode.push_back('\0');
 
     std::string messageContent = "";
-    for (int i = 2; i < tokens.size(); i++) {
-        if (i == tokens.size() - 1)
+    for (int i = 2; i < (int)tokens.size(); i++) {
+        if (i == (int)(tokens.size() - 1))
             messageContent += tokens[i];
         else
             messageContent += (tokens[i] + " ");
     }
     std::vector<char> content(messageContent.begin(), messageContent.end());
-    for (int i = 0; i < content.size(); i++)
+    for (int i = 0; i < (int)content.size(); i++)
         bytesToencode.push_back(content[i]);
     bytesToencode.push_back('\0');
-
     return bytesToencode;
 }
 
@@ -428,6 +430,7 @@ std::vector<char> messageEncoderDecoder::userListEncode() {
     std::vector<char> bytestoEncode;
     bytestoEncode.push_back(opcode[0]);
     bytestoEncode.push_back(opcode[1]);
+    delete[] opcode;
     return bytestoEncode;
 }
 
@@ -436,10 +439,10 @@ std::vector<char> messageEncoderDecoder::statEncode(std::vector<char> bytesToenc
     shortToBytes(8, opcode);
     bytesToencode.push_back(opcode[0]);
     bytesToencode.push_back(opcode[1]);
-    delete opcode;
+    delete[] opcode;
 
     std::vector<char> currentUser(tokens[1].begin(), tokens[1].end());
-    for (int i = 0; i < currentUser.size(); i++)
+    for (int i = 0; i < (int)currentUser.size(); i++)
         bytesToencode.push_back(currentUser[i]);
     bytesToencode.push_back('\0');
 
@@ -457,6 +460,8 @@ void messageEncoderDecoder::shortToBytes(short num, char *bytesArr) {
     bytesArr[1] = (num & 0xFF);
 }
 
-messageEncoderDecoder::~messageEncoderDecoder() {
-    delete currentMessage;
-}
+messageEncoderDecoder::~messageEncoderDecoder() {delete currentMessage;}
+
+messageEncoderDecoder& messageEncoderDecoder::operator=(const messageEncoderDecoder &other) { return *this;}
+
+messageEncoderDecoder::messageEncoderDecoder(const messageEncoderDecoder &other) : typeOfMessage(-1), bytesReaded(0), bytes(), currentMessage(nullptr) {}

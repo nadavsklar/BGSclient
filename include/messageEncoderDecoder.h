@@ -39,9 +39,12 @@ private:
     std::vector<char> userListEncode();
     std::vector<char> statEncode(std::vector<char> bytesToencode, std::vector<std::string> tokens);
 
+
 public:
     ~messageEncoderDecoder();
     messageEncoderDecoder();
+    messageEncoderDecoder(const messageEncoderDecoder &other);
+    messageEncoderDecoder& operator=(const messageEncoderDecoder &other);
     Message *decodeNextByte(char nextByte);
     std::vector<char> encode(std::string line);
 };

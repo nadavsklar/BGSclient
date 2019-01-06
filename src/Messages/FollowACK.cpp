@@ -46,8 +46,8 @@ void FollowACK::increaseCurrentNumOfUsers() {
 
 std::string FollowACK::getUsersString() {
     std::string result = "";
-    for (int i = 0; i < userNameList.size(); i++) {
-        if (i == userNameList.size() - 1)
+    for (int i = 0; i < (int)userNameList.size(); i++) {
+        if (i == (int)userNameList.size() - 1)
             result += userNameList[i];
         else
             result += userNameList[i] + " ";
