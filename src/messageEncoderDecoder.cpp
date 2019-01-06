@@ -73,14 +73,19 @@ void messageEncoderDecoder::ackRead(char nextByte) {
                     tempMessage->setIsReaded(true);
                 else {
                     if (type == 4) {
+                        delete currentMessage;
+                        currentMessage = nullptr;
                         currentMessage = new FollowACK();
                         ((FollowACK*)currentMessage)->setTypeOfMessage(4);
                     }
                     if (type == 7) {
-                        currentMessage = new UserListACK();
+                        delete currentMessage;
+                        currentMessage = nullptr;currentMessage = new UserListACK();
                         ((UserListACK*)currentMessage)->setTypeOfMessage(7);
                     }
                     if (type == 8) {
+                        delete currentMessage;
+                        currentMessage = nullptr;
                         currentMessage = new StatACK();
                         ((StatACK*)currentMessage)->setTypeOfMessage(8);
                     }
@@ -460,7 +465,7 @@ void messageEncoderDecoder::shortToBytes(short num, char *bytesArr) {
     bytesArr[1] = (num & 0xFF);
 }
 
-messageEncoderDecoder::~messageEncoderDecoder() {delete currentMessage;}
+messageEncoderDecoder::~messageEncoderDecoder() {}
 
 messageEncoderDecoder& messageEncoderDecoder::operator=(const messageEncoderDecoder &other) { return *this;}
 
